@@ -25,8 +25,8 @@ if DeviceType == "Mobile" then
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = ClickButton
     MainFrame.AnchorPoint = Vector2.new(1, 0)
-    MainFrame.BackgroundTransparency = 0.8
-    MainFrame.BackgroundColor3 = Color3.fromRGB(38, 38, 38) 
+    MainFrame.BackgroundTransparency = 0.6
+    MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(1, -60, 0, 10)
     MainFrame.Size = UDim2.new(0, 45, 0, 45)
@@ -52,10 +52,10 @@ if DeviceType == "Mobile" then
     TextButton.Position = UDim2.new(0, 0, 0, 0)
     TextButton.Size = UDim2.new(0, 45, 0, 45)
     TextButton.AutoButtonColor = false
-    TextButton.Font = Enum.Font.SourceSans
+    TextButton.Font = Enum.Font.GothamBold
     TextButton.Text = "Open"
-    TextButton.TextColor3 = Color3.new(220, 125, 255)
-    TextButton.TextSize = 20
+    TextButton.TextColor3 = Color3.fromRGB(255, 128, 255)
+    TextButton.TextSize = 18
 
     TextButton.MouseButton1Click:Connect(function()
         game:GetService("VirtualInputManager"):SendKeyEvent(true, "LeftControl", false, game)
@@ -65,12 +65,12 @@ end
 
 local Window = Fluent:CreateWindow({
     Title = game:GetService("MarketplaceService"):GetProductInfo(16732694052).Name .." | Pinky - Premium",
-    SubTitle = "",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    Acrylic = false, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Rose",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+    SubTitle = "discord.gg/7mqfkyxA",
+    TabWidth = 170,
+    Size = UDim2.fromOffset(600, 480),
+    Acrylic = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
 
 -- // // // Services // // // --
@@ -115,65 +115,16 @@ local DayOnlyLoop = nil
 local BypassGpsLoop = nil
 local Noclip = false
 local RunCount = false
-local ModUsernames = {
-    "do_big", "Nate", "iJava", "do_small", "SERVERQAMANAGER", "Amber", 
-    "VantagePointWest", "Kusanagi", "Adam", "Awoken", "Kelven", "yHasteedD",
-    "pingu", "anonrlc", "Echidenpai", "aerophobes", "Uzerk", "Neli", 
-    "zSkanzRbx", "Thynkle", "Hato", "Plutoly", "Kyle", "number6", "kwijt",
-    "CarbonMeister", "ooo", "enryu", "R0bustic", "Light_guy3535", "yvlyf",
-    "maji", "kazer", "puly", "Ta1kk", "rey", "Asiany", "Alp", "Green",
-    "Vel", "FruetLoops", "Adrianex6000", "Phoevri", "runker", "glu",
-    "Ellis", "ifalldownsomestairs", "ccrowsss", "Buildaroo", "poisonedkebab",
-    "Ragu", "lou", "Blubbivies", "lee", "StarMish", "Kuro"
-}
-local AutoCollectEnabled = false
-local AutoSellEnabled = false
-local CollectDistance = 20 -- Distance for auto collect
 
 -- // // // Functions // // // --
 function ShowNotification(String)
     Fluent:Notify({
         Title = "Pinky Hub",
         Content = String,
-        Duration = 5
+        Duration = 5,
+        Theme = "Dark",
+        TitleColor = Color3.fromRGB(255, 128, 255)
     })
-end
-
-local ModDetectionEnabled = false
-local function CheckForMods()
-    for _, player in pairs(Players:GetPlayers()) do
-        if table.find(ModUsernames, player.Name) or table.find(ModUsernames, player.DisplayName) then
-            ShowNotification("⚠️ Mod Detected: " .. player.Name .. "\nLeaving...")
-            task.wait(0.5)
-            Players.LocalPlayer:Kick("\nMod detected: " .. player.Name)
-            task.wait(0.5)
-            game:Shutdown()
-            return true
-        end
-    end
-    return false
-end
-
-local modCheckConnection
-local function StartModDetection()
-    if modCheckConnection then return end
-    if CheckForMods() then return end
-    modCheckConnection = Players.PlayerAdded:Connect(function(player)
-        if table.find(ModUsernames, player.Name) or table.find(ModUsernames, player.DisplayName) then
-            ShowNotification("⚠️ Mod Detected: " .. player.Name .. "\nLeaving...")
-            task.wait(0.5)
-            Players.LocalPlayer:Kick("\nMod detected: " .. player.Name)
-            task.wait(0.5)
-            game:Shutdown()
-        end
-    end)
-end
-
-local function StopModDetection()
-    if modCheckConnection then
-        modCheckConnection:Disconnect()
-        modCheckConnection = nil
-    end
 end
 
 -- // Sending Execution To Discord // --
@@ -311,22 +262,13 @@ local autoReelEnabled = false
 local PerfectCatchEnabled = false
 local autoReelConnection
 local function autoReel()
-    if ReelMode == "Legit" then
-        local reel = PlayerGui:FindFirstChild("reel")
-        if not reel then return end
-        local bar = reel:FindFirstChild("bar")
-        local playerbar = bar and bar:FindFirstChild("playerbar")
-        local fish = bar and bar:FindFirstChild("fish")
-        if playerbar and fish then
-            playerbar.Position = fish.Position
-        end
-    elseif ReelMode == "Blatant" then
-        local reel = PlayerGui:FindFirstChild("reel")
-        if not reel then return end
-        local bar = reel:FindFirstChild("bar")
-        local playerbar = bar and bar:FindFirstChild("playerbar")
-        playerbar:GetPropertyChangedSignal('Position'):Wait()
-        game.ReplicatedStorage:WaitForChild("events"):WaitForChild("reelfinished"):FireServer(100, false)
+    local reel = PlayerGui:FindFirstChild("reel")
+    if not reel then return end
+    local bar = reel:FindFirstChild("bar")
+    local playerbar = bar and bar:FindFirstChild("playerbar")
+    local fish = bar and bar:FindFirstChild("fish")
+    if playerbar and fish then
+        playerbar.Position = fish.Position
     end
 end
 
@@ -342,10 +284,19 @@ local function noperfect()
 end
 
 local function startAutoReel()
-    if autoReelConnection or not autoReelEnabled then return end
-    noperfect()
-    task.wait(2)
-    autoReelConnection = RunService.RenderStepped:Connect(autoReel)
+    if ReelMode == "Legit" then
+        if autoReelConnection or not autoReelEnabled then return end
+        noperfect()
+        task.wait(2)
+        autoReelConnection = RunService.RenderStepped:Connect(autoReel)
+    elseif ReelMode == "Blatant" then
+        local reel = PlayerGui:FindFirstChild("reel")
+        if not reel then return end
+        local bar = reel:FindFirstChild("bar")
+        local playerbar = bar and bar:FindFirstChild("playerbar")
+        playerbar:GetPropertyChangedSignal('Position'):Wait()
+        game.ReplicatedStorage:WaitForChild("events"):WaitForChild("reelfinished"):FireServer(100, false)
+    end
 end
 
 local function stopAutoReel()
@@ -563,17 +514,30 @@ end)
 
 -- // // // Exclusives // // // --
 local shadowCountLabel = Instance.new("TextLabel", screenGui)
-shadowCountLabel.Size = UDim2.new(0, 200, 0, 50)
+shadowCountLabel.Size = UDim2.new(0, 220, 0, 55)
 shadowCountLabel.Position = UDim2.new(0, 30, 0, 260)
-shadowCountLabel.BackgroundTransparency = 0.5
-shadowCountLabel.BackgroundColor3 = Color3.fromRGB(38, 38, 38) 
-shadowCountLabel.TextColor3 = Color3.new(220, 125, 255)
-shadowCountLabel.Font = Enum.Font.SourceSans
-shadowCountLabel.TextSize = 24
+shadowCountLabel.BackgroundTransparency = 0.4
+shadowCountLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+shadowCountLabel.TextColor3 = Color3.fromRGB(255, 128, 255)
+shadowCountLabel.Font = Enum.Font.GothamBold
+shadowCountLabel.TextSize = 22
 shadowCountLabel.Text = "Shadow Count: 0"
 
+local UIGradient = Instance.new("UIGradient")
+UIGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 128, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 90, 180))
+})
+UIGradient.Parent = shadowCountLabel
+
 local corner = Instance.new("UICorner", shadowCountLabel)
-corner.CornerRadius = UDim.new(0, 10)
+corner.CornerRadius = UDim.new(0, 12)
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(255, 128, 255)
+UIStroke.Transparency = 0.6
+UIStroke.Thickness = 1.5
+UIStroke.Parent = shadowCountLabel
 
 local function updateShadowCount()
     local count = #workspace.Shadows:GetChildren()
@@ -606,7 +570,7 @@ do
         Title = "Copy Discord link",
         Description = "Join our main discord!",
         Callback = function()
-            setclipboard("https://discord.gg/25ms")
+            setclipboard("https://discord.gg/7mqfkyxA")
         end
     })
 
@@ -1092,60 +1056,15 @@ do
     end)
 
     local IdentityHiderUI = Tabs.Misc:AddToggle("IdentityHiderUI", {Title = "Protect Identity", Default = false })    
-
-    -- Store original values
-    local originalValues = {
-        streak = "",
-        level = "",
-        user = "",
-        coins = "",
-        lvl = ""
-    }
-
     IdentityHiderUI:OnChanged(function()
-        if Options.IdentityHiderUI.Value then
-            -- Store original values before hiding
-            if UserPlayer:FindFirstChild("streak") then 
-                originalValues.streak = UserPlayer.streak.Text
-                UserPlayer.streak.Text = "HIDDEN" 
-            end
-            if UserPlayer:FindFirstChild("level") then 
-                originalValues.level = UserPlayer.level.Text
-                UserPlayer.level.Text = "Level: HIDDEN" 
-            end
-            if UserPlayer:FindFirstChild("user") then 
-                originalValues.user = UserPlayer.user.Text
-                UserPlayer.user.Text = "HIDDEN" 
-            end
-            
+        while Options.IdentityHiderUI.Value == true do
+            if UserPlayer:FindFirstChild("streak") then UserPlayer.streak.Text = "HIDDEN" end
+            if UserPlayer:FindFirstChild("level") then UserPlayer.level.Text = "Level: HIDDEN" end
+            if UserPlayer:FindFirstChild("level") then UserPlayer.user.Text = "HIDDEN" end
             local hud = LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("hud"):WaitForChild("safezone")
-            if hud:FindFirstChild("coins") then 
-                originalValues.coins = hud.coins.Text
-                hud.coins.Text = "HIDDEN$" 
-            end
-            if hud:FindFirstChild("lvl") then 
-                originalValues.lvl = hud.lvl.Text
-                hud.lvl.Text = "HIDDEN LVL" 
-            end
-        else
-            -- Restore original values
-            if UserPlayer:FindFirstChild("streak") then 
-                UserPlayer.streak.Text = originalValues.streak 
-            end
-            if UserPlayer:FindFirstChild("level") then 
-                UserPlayer.level.Text = originalValues.level
-            end
-            if UserPlayer:FindFirstChild("user") then 
-                UserPlayer.user.Text = originalValues.user
-            end
-            
-            local hud = LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("hud"):WaitForChild("safezone")
-            if hud:FindFirstChild("coins") then 
-                hud.coins.Text = originalValues.coins
-            end
-            if hud:FindFirstChild("lvl") then 
-                hud.lvl.Text = originalValues.lvl
-            end
+            if hud:FindFirstChild("coins") then hud.coins.Text = "HIDDEN$" end
+            if hud:FindFirstChild("lvl") then hud.lvl.Text = "HIDDEN LVL" end
+            task.wait(0.01)
         end
     end)
 
@@ -1165,92 +1084,13 @@ do
     })
 
     local section = Tabs.Trade:AddSection("Coming Soon...")
-
-    -- Add the Mod Detection section here, right after your auto fishing toggles
-    local section = Tabs.Main:AddSection("Mod Detection")
-    
-    local ModDetector = Tabs.Main:AddToggle("ModDetector", {
-        Title = "Auto Mod Detector",
-        Default = false
-    })
-
-    ModDetector:OnChanged(function()
-        ModDetectionEnabled = Options.ModDetector.Value
-        if ModDetectionEnabled then
-            StartModDetection()
-            ShowNotification("Mod Detection Enabled")
-        else
-            StopModDetection()
-            ShowNotification("Mod Detection Disabled")
-        end
-    end)
-
-    Tabs.Main:AddButton({
-        Title = "Check For Mods",
-        Description = "Manually check if any mods are in the server",
-        Callback = function()
-            if CheckForMods() then
-                ShowNotification("⚠️ Mods found in server!")
-            else
-                ShowNotification("✅ No mods detected in server")
-            end
-        end
-    })
-
-    -- Add to Main tab
-    local section = Tabs.Main:AddSection("Auto Farm")
-
-    local AutoCollect = Tabs.Main:AddToggle("AutoCollect", {
-        Title = "Auto Collect Fish",
-        Default = false
-    })
-
-    AutoCollect:OnChanged(function()
-        AutoCollectEnabled = Options.AutoCollect.Value
-        if AutoCollectEnabled then
-            spawn(function()
-                while AutoCollectEnabled and task.wait(0.1) do
-                    CollectNearbyFish()
-                end
-            end)
-        end
-    end)
-
-    local AutoSell = Tabs.Main:AddToggle("AutoSell", {
-        Title = "Auto Sell When Full",
-        Default = false
-    })
-
-    AutoSell:OnChanged(function()
-        AutoSellEnabled = Options.AutoSell.Value
-        if AutoSellEnabled then
-            spawn(function()
-                while AutoSellEnabled and task.wait(1) do
-                    if GetInventoryCount() >= 20 then -- Inventory full
-                        SellFish()
-                    end
-                end
-            end)
-        end
-    end)
-
-    local CollectDistanceSlider = Tabs.Main:AddSlider("CollectDistance", {
-        Title = "Collect Distance",
-        Description = "Distance to collect fish from",
-        Default = 20,
-        Min = 5,
-        Max = 50,
-        Rounding = 0,
-    })
-
-    CollectDistanceSlider:OnChanged(function(Value)
-        CollectDistance = Value
-    end)
 end
 
 Window:SelectTab(1)
 Fluent:Notify({
     Title = "Pinky",
-    Content = "Executed!",
-    Duration = 8
+    Content = "Successfully Executed!",
+    Duration = 8,
+    Theme = "Dark",
+    TitleColor = Color3.fromRGB(255, 128, 255)
 })
