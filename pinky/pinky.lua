@@ -25,8 +25,8 @@ if DeviceType == "Mobile" then
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = ClickButton
     MainFrame.AnchorPoint = Vector2.new(1, 0)
-    MainFrame.BackgroundTransparency = 0.6
-    MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+    MainFrame.BackgroundTransparency = 0.2
+    MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(1, -60, 0, 10)
     MainFrame.Size = UDim2.new(0, 45, 0, 45)
@@ -61,6 +61,25 @@ if DeviceType == "Mobile" then
         game:GetService("VirtualInputManager"):SendKeyEvent(true, "LeftControl", false, game)
         game:GetService("VirtualInputManager"):SendKeyEvent(false, "LeftControl", false, game)
     end)
+
+    local UIGradient = Instance.new("UIGradient")
+    UIGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 128, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 90, 180))
+    })
+    UIGradient.Rotation = 45
+    UIGradient.Parent = MainFrame
+
+    local Glow = Instance.new("ImageLabel")
+    Glow.Name = "Glow"
+    Glow.BackgroundTransparency = 1
+    Glow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Glow.Size = UDim2.new(1.5, 0, 1.5, 0)
+    Glow.AnchorPoint = Vector2.new(0.5, 0.5)
+    Glow.Image = "rbxassetid://7131946098"
+    Glow.ImageColor3 = Color3.fromRGB(255, 128, 255)
+    Glow.ImageTransparency = 0.5
+    Glow.Parent = MainFrame
 end
 
 local Window = Fluent:CreateWindow({
@@ -68,9 +87,19 @@ local Window = Fluent:CreateWindow({
     SubTitle = "discord.gg/7mqfkyxA",
     TabWidth = 170,
     Size = UDim2.fromOffset(600, 480),
-    Acrylic = true,
+    Acrylic = false,
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
+    MinimizeKey = Enum.KeyCode.LeftControl,
+    ButtonPreset = "Custom",
+    Buttons = {
+        {
+            Text = "Discord",
+            Callback = function() 
+                setclipboard("discord.gg/7mqfkyxA")
+                ShowNotification("Discord link copied!")
+            end
+        }
+    }
 })
 
 -- // // // Services // // // --
@@ -123,7 +152,16 @@ function ShowNotification(String)
         Content = String,
         Duration = 5,
         Theme = "Dark",
-        TitleColor = Color3.fromRGB(255, 128, 255)
+        TitleColor = Color3.fromRGB(255, 128, 255),
+        Icon = "rbxassetid://7072718412",
+        Actions = {
+            Ignore = {
+                Name = "Okay!",
+                Callback = function()
+                    print("User acknowledged notification")
+                end
+            }
+        }
     })
 end
 
@@ -516,8 +554,8 @@ end)
 local shadowCountLabel = Instance.new("TextLabel", screenGui)
 shadowCountLabel.Size = UDim2.new(0, 220, 0, 55)
 shadowCountLabel.Position = UDim2.new(0, 30, 0, 260)
-shadowCountLabel.BackgroundTransparency = 0.4
-shadowCountLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+shadowCountLabel.BackgroundTransparency = 0.1
+shadowCountLabel.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
 shadowCountLabel.TextColor3 = Color3.fromRGB(255, 128, 255)
 shadowCountLabel.Font = Enum.Font.GothamBold
 shadowCountLabel.TextSize = 22
@@ -526,18 +564,50 @@ shadowCountLabel.Text = "Shadow Count: 0"
 local UIGradient = Instance.new("UIGradient")
 UIGradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 128, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 90, 180))
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180, 90, 180)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 128, 255))
 })
 UIGradient.Parent = shadowCountLabel
 
+spawn(function()
+    local rotation = 0
+    while wait() do
+        rotation = (rotation + 1) % 360
+        UIGradient.Rotation = rotation
+    end
+end)
+
+local Glow = Instance.new("ImageLabel")
+Glow.Name = "Glow"
+Glow.BackgroundTransparency = 1
+Glow.Position = UDim2.new(0.5, 0, 0.5, 0)
+Glow.Size = UDim2.new(1.2, 0, 1.2, 0)
+Glow.AnchorPoint = Vector2.new(0.5, 0.5)
+Glow.Image = "rbxassetid://7131946098"
+Glow.ImageColor3 = Color3.fromRGB(255, 128, 255)
+Glow.ImageTransparency = 0.8
+Glow.Parent = shadowCountLabel
+
 local corner = Instance.new("UICorner", shadowCountLabel)
-corner.CornerRadius = UDim.new(0, 12)
+corner.CornerRadius = UDim.new(0, 15)
 
 local UIStroke = Instance.new("UIStroke")
 UIStroke.Color = Color3.fromRGB(255, 128, 255)
-UIStroke.Transparency = 0.6
-UIStroke.Thickness = 1.5
+UIStroke.Transparency = 0.4
+UIStroke.Thickness = 2
 UIStroke.Parent = shadowCountLabel
+
+local DropShadow = Instance.new("ImageLabel")
+DropShadow.Name = "DropShadow"
+DropShadow.BackgroundTransparency = 1
+DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+DropShadow.Size = UDim2.new(1.1, 0, 1.1, 0)
+DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+DropShadow.Image = "rbxassetid://7131946098"
+DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+DropShadow.ImageTransparency = 0.5
+DropShadow.ZIndex = -1
+DropShadow.Parent = shadowCountLabel
 
 local function updateShadowCount()
     local count = #workspace.Shadows:GetChildren()
@@ -1088,9 +1158,18 @@ end
 
 Window:SelectTab(1)
 Fluent:Notify({
-    Title = "Pinky",
-    Content = "Successfully Executed!",
+    Title = "Pinky Hub",
+    Content = "Successfully Executed! Welcome to Pinky Premium.",
     Duration = 8,
     Theme = "Dark",
-    TitleColor = Color3.fromRGB(255, 128, 255)
+    TitleColor = Color3.fromRGB(255, 128, 255),
+    Icon = "rbxassetid://7072718412",
+    Actions = {
+        Ignore = {
+            Name = "Thanks!",
+            Callback = function()
+                print("User acknowledged execution")
+            end
+        }
+    }
 })
