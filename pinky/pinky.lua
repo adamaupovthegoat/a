@@ -239,48 +239,48 @@ local function autoCast()
 end
 
 -- // // // Auto Shake // // // --
-local autoShakeEnabled = false
+local autoShakeEnabled = true -- Set to true to enable auto-shake
 local autoShakeConnection
+local ShakeMode = "Navigation" -- Choose between "Navigation" or "Mouse"
+
 local function autoShake()
     if ShakeMode == "Navigation" then
-        xpcall(function()
+        pcall(function()
             local shakeui = PlayerGui:FindFirstChild("shakeui")
             if not shakeui then return end
             local safezone = shakeui:FindFirstChild("safezone")
             local button = safezone and safezone:FindFirstChild("button")
             if button then
-                task.wait(0.2)
+                -- Simulate button press using GuiService
                 GuiService.SelectedObject = button
-                if GuiService.SelectedObject == button then
-                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
-                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
-                end
-                GuiService.SelectedObject = nil
+                task.wait(0.1) -- Reduced wait time for better responsiveness
+                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                GuiService.SelectedObject = nil -- Clear selected object after press
             end
-        end, function(err)
-            warn("[AutoShake: Navigation] Error: ", err)
         end)
     elseif ShakeMode == "Mouse" then
-        xpcall(function()
+        pcall(function()
             local shakeui = PlayerGui:FindFirstChild("shakeui")
             if not shakeui then return end
             local safezone = shakeui:FindFirstChild("safezone")
             local button = safezone and safezone:FindFirstChild("button")
             if button then
+                -- Simulate mouse click on button
                 local pos = button.AbsolutePosition
                 local size = button.AbsoluteSize
-                VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, true, game, 0)
-                VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, false, game, 0)
+                local centerX, centerY = pos.X + size.X / 2, pos.Y + size.Y / 2
+                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, true, game, 0)
+                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, game, 0)
             end
-        end, function(err)
-            warn("[AutoShake: Mouse] Error: ", err)
         end)
     end
 end
 
 local function startAutoShake()
     if autoShakeConnection or not autoShakeEnabled then return end
-    autoShakeConnection = RunService.RenderStepped:Connect(autoShake)
+    -- Use Heartbeat for smoother execution instead of RenderStepped
+    autoShakeConnection = RunService.Heartbeat:Connect(autoShake)
 end
 
 local function stopAutoShake()
@@ -290,31 +290,28 @@ local function stopAutoShake()
     end
 end
 
+-- Automatically start/stop auto-shake based on GUI changes
 PlayerGui.DescendantAdded:Connect(function(descendant)
     if autoShakeEnabled and descendant.Name == "button" and descendant.Parent and descendant.Parent.Name == "safezone" then
         startAutoShake()
     end
 end)
 
-PlayerGui.DescendantAdded:Connect(function(descendant)
-    if descendant.Name == "playerbar" and descendant.Parent and descendant.Parent.Name == "bar" then
+PlayerGui.DescendantRemoving:Connect(function(descendant)
+    if descendant.Name == "button" and descendant.Parent and descendant.Parent.Name == "safezone" then
         stopAutoShake()
     end
 end)
 
--- Ensure autoShake runs continuously when enabled
-task.spawn(function()
-    while task.wait(0.1) do
-        if autoShakeEnabled and not autoShakeConnection then
-            startAutoShake()
-        end
+-- Initial check for shake UI
+task.defer(function()
+    local shakeui = PlayerGui:FindFirstChild("shakeui")
+    local safezone = shakeui and shakeui:FindFirstChild("safezone")
+    local button = safezone and safezone:FindFirstChild("button")
+    if autoShakeEnabled and button then
+        startAutoShake()
     end
 end)
-
--- Initial trigger to start auto-shaking
-if autoShakeEnabled and PlayerGui:FindFirstChild("shakeui") and PlayerGui.shakeui:FindFirstChild("safezone") and PlayerGui.shakeui.safezone:FindFirstChild("button") then
-    startAutoShake()
-end
 
 
 -- // // // Auto Reel // // // --
