@@ -83,22 +83,22 @@ if DeviceType == "Mobile" then
 end
 
 local Window = Fluent:CreateWindow({
-    Title = "✧ " .. game:GetService("MarketplaceService"):GetProductInfo(16732694052).Name .." | 『 Pinky Premium 』 ✧",
-    SubTitle = "✦ Premium Edition | discord.gg/7mqfkyxA ✦",
-    TabWidth = 170,
-    Size = UDim2.fromOffset(650, 520),
+    Title = "✵ " .. game:GetService("MarketplaceService"):GetProductInfo(16732694052).Name .." | 『 𝓟𝓲𝓷𝓴𝔂 𝓖𝓸𝓭 』 ✵",
+    SubTitle = "❈ 𝓖𝓸𝓭 𝓣𝓲𝓮𝓻 𝓔𝓭𝓲𝓽𝓲𝓸𝓷 | discord.gg/7mqfkyxA ❈",
+    TabWidth = 190,
+    Size = UDim2.fromOffset(680, 540),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl,
     ButtonPreset = "Custom",
     Buttons = {
         {
-            Text = "✧ Premium Discord ✧",
+            Text = "✵ 𝓥𝓘𝓟 𝓓𝓲𝓼𝓬𝓸𝓻𝓭 ✵",
             RichText = true,
-            TextColor3 = Color3.fromRGB(255, 128, 255),
+            TextColor3 = Color3.fromRGB(255, 100, 255),
             Callback = function() 
                 setclipboard("discord.gg/7mqfkyxA")
-                ShowNotification("VIP Discord copied! Welcome to the elite community!")
+                ShowNotification("VIP Discord copied! Welcome to godhood!")
             end
         }
     }
@@ -129,14 +129,14 @@ local NpcFolder = Workspace:FindFirstChild("world"):WaitForChild("npcs")
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local screenGui = Instance.new("ScreenGui", PlayerGui)
 local shadowCountLabel = Instance.new("TextLabel", screenGui)
-shadowCountLabel.Size = UDim2.new(0, 260, 0, 70)
+shadowCountLabel.Size = UDim2.new(0, 300, 0, 80)
 shadowCountLabel.Position = UDim2.new(0, 30, 0, 260)
-shadowCountLabel.BackgroundTransparency = 0.02
-shadowCountLabel.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-shadowCountLabel.TextColor3 = Color3.fromRGB(255, 128, 255)
+shadowCountLabel.BackgroundTransparency = 0
+shadowCountLabel.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+shadowCountLabel.TextColor3 = Color3.fromRGB(255, 100, 255)
 shadowCountLabel.Font = Enum.Font.GothamBold
-shadowCountLabel.TextSize = 22
-shadowCountLabel.Text = "✧ Shadow Count: 0 ✧"
+shadowCountLabel.TextSize = 26
+shadowCountLabel.Text = "✵ Shadow Count: 0 ✵"
 shadowCountLabel.Visible = false
 local RenderStepped = RunService.RenderStepped
 local WaitForSomeone = RenderStepped.Wait
@@ -159,15 +159,15 @@ local RunCount = false
 -- // // // Functions // // // --
 function ShowNotification(String)
     Fluent:Notify({
-        Title = "✧ Pinky Premium ✧",
-        Content = "⚡ " .. String,
+        Title = "✵ 𝓟𝓲𝓷𝓴𝔂 𝓖𝓸𝓭 ✵",
+        Content = "⚝ " .. String,
         Duration = 5,
         Theme = "Dark",
-        TitleColor = Color3.fromRGB(255, 128, 255),
+        TitleColor = Color3.fromRGB(255, 100, 255),
         Icon = "rbxassetid://7072718412",
         Actions = {
             Ignore = {
-                Name = "✦",
+                Name = "✵",
                 Callback = function() end
             }
         }
@@ -561,21 +561,21 @@ end)
 
 -- // // // Exclusives // // // --
 local shadowCountLabel = Instance.new("TextLabel", screenGui)
-shadowCountLabel.Size = UDim2.new(0, 260, 0, 70)
+shadowCountLabel.Size = UDim2.new(0, 300, 0, 80)
 shadowCountLabel.Position = UDim2.new(0, 30, 0, 260)
-shadowCountLabel.BackgroundTransparency = 0.02
-shadowCountLabel.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-shadowCountLabel.TextColor3 = Color3.fromRGB(255, 128, 255)
+shadowCountLabel.BackgroundTransparency = 0
+shadowCountLabel.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+shadowCountLabel.TextColor3 = Color3.fromRGB(255, 100, 255)
 shadowCountLabel.Font = Enum.Font.GothamBold
-shadowCountLabel.TextSize = 22
-shadowCountLabel.Text = "✧ Shadow Count: 0 ✧"
+shadowCountLabel.TextSize = 26
+shadowCountLabel.Text = "✵ Shadow Count: 0 ✵"
 shadowCountLabel.Visible = false
 
 local UIGradient = Instance.new("UIGradient")
 UIGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 128, 255)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 100, 255)),
     ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180, 90, 180)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 128, 255))
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 100, 255))
 })
 UIGradient.Parent = shadowCountLabel
 
@@ -594,7 +594,7 @@ Glow.Position = UDim2.new(0.5, 0, 0.5, 0)
 Glow.Size = UDim2.new(1.2, 0, 1.2, 0)
 Glow.AnchorPoint = Vector2.new(0.5, 0.5)
 Glow.Image = "rbxassetid://7131946098"
-Glow.ImageColor3 = Color3.fromRGB(255, 128, 255)
+Glow.ImageColor3 = Color3.fromRGB(255, 100, 255)
 Glow.ImageTransparency = 0.8
 Glow.Parent = shadowCountLabel
 
@@ -602,7 +602,7 @@ local corner = Instance.new("UICorner", shadowCountLabel)
 corner.CornerRadius = UDim.new(0, 15)
 
 local UIStroke = Instance.new("UIStroke")
-UIStroke.Color = Color3.fromRGB(255, 128, 255)
+UIStroke.Color = Color3.fromRGB(255, 100, 255)
 UIStroke.Transparency = 0.4
 UIStroke.Thickness = 2
 UIStroke.Parent = shadowCountLabel
@@ -621,7 +621,7 @@ DropShadow.Parent = shadowCountLabel
 
 local function updateShadowCount()
     local count = #workspace.Shadows:GetChildren()
-    shadowCountLabel.Text = "✧ Shadow Count: " .. count .. " ✧"
+    shadowCountLabel.Text = "✧ Shadow Count: " .. count .. " ✵"
 end
 
 spawn(function()
@@ -634,8 +634,8 @@ end)
 -- // // // Tabs Gui // // // --
 
 local Tabs = { -- https://lucide.dev/icons/
-    Home = Window:AddTab({ Title = "✧ Home ✧", Icon = "home", RightIcon = "star", TextColor3 = Color3.fromRGB(255, 128, 255) }),
-    Exclusives = Window:AddTab({ Title = "✧ Exclusives ✧", Icon = "crown", RightIcon = "sparkles", TextColor3 = Color3.fromRGB(255, 128, 255) }),
+    Home = Window:AddTab({ Title = "✵ 𝓗𝓸𝓶𝓮 ✵", Icon = "crown", RightIcon = "sparkles", TextColor3 = Color3.fromRGB(255, 100, 255) }),
+    Exclusives = Window:AddTab({ Title = "✵ 𝓔𝔁𝓬𝓵𝓾𝓼𝓲𝓿𝓮𝓼 ✵", Icon = "gem", RightIcon = "star", TextColor3 = Color3.fromRGB(255, 100, 255) }),
     Main = Window:AddTab({ Title = "✧ Main ✧", Icon = "settings", RightIcon = "check", TextColor3 = Color3.fromRGB(255, 128, 255) }),
     Items = Window:AddTab({ Title = "✧ Items ✧", Icon = "package", RightIcon = "box", TextColor3 = Color3.fromRGB(255, 128, 255) }),
     Teleports = Window:AddTab({ Title = "✧ Teleports ✧", Icon = "map", RightIcon = "navigation", TextColor3 = Color3.fromRGB(255, 128, 255) }),
@@ -657,7 +657,7 @@ do
     -- // Exclusives Tab // --
     local sectionExclus = Tabs.Exclusives:AddSection("Exclusives Features")
     local CountShadows = Tabs.Exclusives:AddToggle("CountShadows", {
-        Title = "✧ Show Shadow Counter ✧",
+        Title = "✵ 𝓢𝓱𝓸𝔀 𝓢𝓱𝓪𝓭𝓸𝔀 𝓒𝓸𝓾𝓷𝓽𝓮𝓻 ✵",
         Default = false
     })
     CountShadows:OnChanged(function()
@@ -1170,21 +1170,21 @@ end
 
 Window:SelectTab(1)
 Fluent:Notify({
-    Title = "✧ Pinky Premium ✧",
-    Content = [[⚡ Premium Successfully Loaded! ⚡
+    Title = "✵ 𝓟𝓲𝓷𝓴𝔂 𝓖𝓸𝓭 ✵",
+    Content = [[✵ 𝓖𝓸𝓭 𝓣𝓲𝓮𝓻 𝓐𝓬𝓽𝓲𝓿𝓪𝓽𝓮𝓭! ✵
     
-✦ Welcome to the Elite Experience
-✦ All Premium Features Activated
-✦ Enjoy Your VIP Access!]],
+❈ Welcome to Divine Power
+❈ God Tier Features Unlocked
+❈ Enjoy Your Godly Access!]],
     Duration = 8,
     Theme = "Dark",
-    TitleColor = Color3.fromRGB(255, 128, 255),
+    TitleColor = Color3.fromRGB(255, 100, 255),
     Icon = "rbxassetid://7072718412",
     Actions = {
         Ignore = {
-            Name = "✧",
+            Name = "✵",
             Callback = function()
-                print("Premium activation acknowledged")
+                print("God Tier activation complete")
             end
         }
     }
