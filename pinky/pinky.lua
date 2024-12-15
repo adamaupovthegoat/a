@@ -83,20 +83,22 @@ if DeviceType == "Mobile" then
 end
 
 local Window = Fluent:CreateWindow({
-    Title = game:GetService("MarketplaceService"):GetProductInfo(16732694052).Name .." | Pinky - Premium",
-    SubTitle = "discord.gg/7mqfkyxA",
+    Title = "✧ " .. game:GetService("MarketplaceService"):GetProductInfo(16732694052).Name .." | 『 Pinky Premium 』 ✧",
+    SubTitle = "✦ Premium Edition | discord.gg/7mqfkyxA ✦",
     TabWidth = 170,
-    Size = UDim2.fromOffset(600, 480),
+    Size = UDim2.fromOffset(650, 520),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl,
     ButtonPreset = "Custom",
     Buttons = {
         {
-            Text = "Discord",
+            Text = "✧ Premium Discord ✧",
+            RichText = true,
+            TextColor3 = Color3.fromRGB(255, 128, 255),
             Callback = function() 
                 setclipboard("discord.gg/7mqfkyxA")
-                ShowNotification("Discord link copied!")
+                ShowNotification("VIP Discord copied! Welcome to the elite community!")
             end
         }
     }
@@ -127,6 +129,15 @@ local NpcFolder = Workspace:FindFirstChild("world"):WaitForChild("npcs")
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local screenGui = Instance.new("ScreenGui", PlayerGui)
 local shadowCountLabel = Instance.new("TextLabel", screenGui)
+shadowCountLabel.Size = UDim2.new(0, 260, 0, 70)
+shadowCountLabel.Position = UDim2.new(0, 30, 0, 260)
+shadowCountLabel.BackgroundTransparency = 0.02
+shadowCountLabel.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+shadowCountLabel.TextColor3 = Color3.fromRGB(255, 128, 255)
+shadowCountLabel.Font = Enum.Font.GothamBold
+shadowCountLabel.TextSize = 22
+shadowCountLabel.Text = "✧ Shadow Count: 0 ✧"
+shadowCountLabel.Visible = false
 local RenderStepped = RunService.RenderStepped
 local WaitForSomeone = RenderStepped.Wait
 
@@ -148,18 +159,16 @@ local RunCount = false
 -- // // // Functions // // // --
 function ShowNotification(String)
     Fluent:Notify({
-        Title = "Pinky Hub",
-        Content = String,
+        Title = "✧ Pinky Premium ✧",
+        Content = "⚡ " .. String,
         Duration = 5,
         Theme = "Dark",
         TitleColor = Color3.fromRGB(255, 128, 255),
         Icon = "rbxassetid://7072718412",
         Actions = {
             Ignore = {
-                Name = "Okay!",
-                Callback = function()
-                    print("User acknowledged notification")
-                end
+                Name = "✦",
+                Callback = function() end
             }
         }
     })
@@ -552,14 +561,15 @@ end)
 
 -- // // // Exclusives // // // --
 local shadowCountLabel = Instance.new("TextLabel", screenGui)
-shadowCountLabel.Size = UDim2.new(0, 220, 0, 55)
+shadowCountLabel.Size = UDim2.new(0, 260, 0, 70)
 shadowCountLabel.Position = UDim2.new(0, 30, 0, 260)
-shadowCountLabel.BackgroundTransparency = 0.1
+shadowCountLabel.BackgroundTransparency = 0.02
 shadowCountLabel.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
 shadowCountLabel.TextColor3 = Color3.fromRGB(255, 128, 255)
 shadowCountLabel.Font = Enum.Font.GothamBold
 shadowCountLabel.TextSize = 22
-shadowCountLabel.Text = "Shadow Count: 0"
+shadowCountLabel.Text = "✧ Shadow Count: 0 ✧"
+shadowCountLabel.Visible = false
 
 local UIGradient = Instance.new("UIGradient")
 UIGradient.Color = ColorSequence.new({
@@ -611,7 +621,7 @@ DropShadow.Parent = shadowCountLabel
 
 local function updateShadowCount()
     local count = #workspace.Shadows:GetChildren()
-    shadowCountLabel.Text = "Shadow Count: " .. count
+    shadowCountLabel.Text = "✧ Shadow Count: " .. count .. " ✧"
 end
 
 spawn(function()
@@ -624,13 +634,13 @@ end)
 -- // // // Tabs Gui // // // --
 
 local Tabs = { -- https://lucide.dev/icons/
-    Home = Window:AddTab({ Title = "Home", Icon = "home" }),
-    Exclusives = Window:AddTab({ Title = "Exclusives", Icon = "heart" }),
-    Main = Window:AddTab({ Title = "Main", Icon = "list" }),
-    Items = Window:AddTab({ Title = "Items", Icon = "box" }),
-    Teleports = Window:AddTab({ Title = "Teleports", Icon = "map-pin" }),
-    Misc = Window:AddTab({ Title = "Misc", Icon = "file-text" }),
-    Trade = Window:AddTab({ Title = "Trade", Icon = "gift" })
+    Home = Window:AddTab({ Title = "✧ Home ✧", Icon = "home", RightIcon = "star", TextColor3 = Color3.fromRGB(255, 128, 255) }),
+    Exclusives = Window:AddTab({ Title = "✧ Exclusives ✧", Icon = "crown", RightIcon = "sparkles", TextColor3 = Color3.fromRGB(255, 128, 255) }),
+    Main = Window:AddTab({ Title = "✧ Main ✧", Icon = "settings", RightIcon = "check", TextColor3 = Color3.fromRGB(255, 128, 255) }),
+    Items = Window:AddTab({ Title = "✧ Items ✧", Icon = "package", RightIcon = "box", TextColor3 = Color3.fromRGB(255, 128, 255) }),
+    Teleports = Window:AddTab({ Title = "✧ Teleports ✧", Icon = "map", RightIcon = "navigation", TextColor3 = Color3.fromRGB(255, 128, 255) }),
+    Misc = Window:AddTab({ Title = "✧ Misc ✧", Icon = "more-horizontal", RightIcon = "settings", TextColor3 = Color3.fromRGB(255, 128, 255) }),
+    Trade = Window:AddTab({ Title = "✧ Trade ✧", Icon = "repeat", RightIcon = "gift", TextColor3 = Color3.fromRGB(255, 128, 255) })
 }
 
 local Options = Fluent.Options
@@ -646,15 +656,17 @@ do
 
     -- // Exclusives Tab // --
     local sectionExclus = Tabs.Exclusives:AddSection("Exclusives Features")
-    local CountShadows = Tabs.Exclusives:AddToggle("CountShadows", {Title = "Show Count Shadows", Default = false })
+    local CountShadows = Tabs.Exclusives:AddToggle("CountShadows", {
+        Title = "✧ Show Shadow Counter ✧",
+        Default = false
+    })
     CountShadows:OnChanged(function()
         local RequireRod = PlayerGui.hud.safezone.equipment.rods.scroll.safezone:FindFirstChild("Rod Of The Depths")
-        if not RequireRod then return ShowNotification("Requirement Rod Of The Depths") end
-        if Options.CountShadows.Value == true then
-            shadowCountLabel.Visible = true
-        else
-            shadowCountLabel.Visible = false
+        if not RequireRod then 
+            CountShadows:SetValue(false)
+            return ShowNotification("Requirement: Rod Of The Depths") 
         end
+        shadowCountLabel.Visible = Options.CountShadows.Value
     end)
     local RodDupe = Tabs.Exclusives:AddToggle("RodDupe", {Title = "Rod Of The Depths Spam", Default = false })
     RodDupe:OnChanged(function()
@@ -1158,17 +1170,21 @@ end
 
 Window:SelectTab(1)
 Fluent:Notify({
-    Title = "Pinky Hub",
-    Content = "Successfully Executed! Welcome to Pinky Premium.",
+    Title = "✧ Pinky Premium ✧",
+    Content = [[⚡ Premium Successfully Loaded! ⚡
+    
+✦ Welcome to the Elite Experience
+✦ All Premium Features Activated
+✦ Enjoy Your VIP Access!]],
     Duration = 8,
     Theme = "Dark",
     TitleColor = Color3.fromRGB(255, 128, 255),
     Icon = "rbxassetid://7072718412",
     Actions = {
         Ignore = {
-            Name = "Thanks!",
+            Name = "✧",
             Callback = function()
-                print("User acknowledged execution")
+                print("Premium activation acknowledged")
             end
         }
     }
