@@ -98,7 +98,6 @@ local Window = Fluent:CreateWindow({
             TextColor3 = Color3.fromRGB(255, 100, 255),
             Callback = function() 
                 setclipboard("discord.gg/7mqfkyxA")
-                ShowNotification("Discord link copied!")
             end
         }
     }
@@ -161,7 +160,7 @@ function ShowNotification(String)
     Fluent:Notify({
         Title = "Pinky God",
         Content = String,
-        Duration = 5,
+        Duration = 3,
         Theme = "Dark",
         TitleColor = Color3.fromRGB(255, 100, 255),
         Icon = "rbxassetid://7072718412",
@@ -244,34 +243,37 @@ local autoShakeEnabled = false
 local autoShakeConnection
 local function autoShake()
     if ShakeMode == "Navigation" then
-        task.wait()
         xpcall(function()
             local shakeui = PlayerGui:FindFirstChild("shakeui")
             if not shakeui then return end
             local safezone = shakeui:FindFirstChild("safezone")
             local button = safezone and safezone:FindFirstChild("button")
-            task.wait(0.2)
-            GuiService.SelectedObject = button
-            if GuiService.SelectedObject == button then
-                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
-                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+            if button then
+                task.wait(0.2)
+                GuiService.SelectedObject = button
+                if GuiService.SelectedObject == button then
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                end
+                GuiService.SelectedObject = nil
             end
-            task.wait(0.1)
-            GuiService.SelectedObject = nil
-        end,function (err)
+        end, function(err)
+            warn("[AutoShake: Navigation] Error: ", err)
         end)
     elseif ShakeMode == "Mouse" then
-        task.wait()
         xpcall(function()
             local shakeui = PlayerGui:FindFirstChild("shakeui")
             if not shakeui then return end
             local safezone = shakeui:FindFirstChild("safezone")
             local button = safezone and safezone:FindFirstChild("button")
-            local pos = button.AbsolutePosition
-            local size = button.AbsoluteSize
-            VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, true, LocalPlayer, 0)
-            VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, false, LocalPlayer, 0)
-        end,function (err)
+            if button then
+                local pos = button.AbsolutePosition
+                local size = button.AbsoluteSize
+                VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, true, game, 0)
+                VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, false, game, 0)
+            end
+        end, function(err)
+            warn("[AutoShake: Mouse] Error: ", err)
         end)
     end
 end
@@ -300,9 +302,20 @@ PlayerGui.DescendantAdded:Connect(function(descendant)
     end
 end)
 
+-- Ensure autoShake runs continuously when enabled
+task.spawn(function()
+    while task.wait(0.1) do
+        if autoShakeEnabled and not autoShakeConnection then
+            startAutoShake()
+        end
+    end
+end)
+
+-- Initial trigger to start auto-shaking
 if autoShakeEnabled and PlayerGui:FindFirstChild("shakeui") and PlayerGui.shakeui:FindFirstChild("safezone") and PlayerGui.shakeui.safezone:FindFirstChild("button") then
     startAutoShake()
 end
+
 
 -- // // // Auto Reel // // // --
 local autoReelEnabled = false
@@ -685,7 +698,9 @@ Updated: ]] .. os.date("%d/%m/%Y")
         local RequireRod = PlayerGui.hud.safezone.equipment.rods.scroll.safezone:FindFirstChild("Rod Of The Depths")
         if not RequireRod then 
             CountShadows:SetValue(false)
-            return ShowNotification("Requirement: Rod Of The Depths") 
+            if Options.CountShadows.Value then
+                ShowNotification("Requirement: Rod Of The Depths") 
+            end
         end
         shadowCountLabel.Visible = Options.CountShadows.Value
     end)
@@ -1192,20 +1207,15 @@ end
 Window:SelectTab(1)
 Fluent:Notify({
     Title = "Pinky God",
-    Content = [[Successfully Loaded!
-    
-Welcome to Pinky God
-Enjoy your exclusive features!]],
-    Duration = 8,
+    Content = "Successfully Loaded",
+    Duration = 3,
     Theme = "Dark",
     TitleColor = Color3.fromRGB(255, 100, 255),
     Icon = "rbxassetid://7072718412",
     Actions = {
         Ignore = {
             Name = "OK",
-            Callback = function()
-                print("Activation complete")
-            end
+            Callback = function() end
         }
     }
 })
